@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sletter</title>
+    <script src="static/aes.js"></script>
+    <link rel="stylesheet" href="static/chat.css">
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="dis">
+        <center><input id="disinput" value="password" type="password"><button onclick="go()"
+                id="disbutton">Decryption</button></center>
+    </div>
+
+    <img id="thisclick" src="static/mouse.gif" alt="mousegif">
+
+    <div id="chat">
+        <div class="talk-bubble tri-right right-top me">
+            <div class="talktext">
+                <p class="hash">U2FsdGVkX1/qCEw07yOQu8MsvOrZ/nLTzSOtQPTqMRzE6kTy/wMrfeseRwNRaMCx</p>
+            </div>
+        </div>
+        <br>
+        <div class="talk-bubble tri-right left-top other">
+            <div class="talktext">
+                <p class="hash">U2FsdGVkX1+nC4Rxav+xzS5J2Ak/zf5mPZAYEb8wtRNn/X76tu9Pb5f9rS56dZS6flHgzQ7PGfxp+kFN4CE0UsLfwZxYjF7VClema8uguMs=</p>
+            </div>
+        </div>
+<br>
+        <div class="talk-bubble tri-right right-top me">
+            <div class="talktext">
+                <p class="hash">U2FsdGVkX1+TnBpJutAFrUskRzwj5kxmmteEwMkUX794lAh2kQS7bmsF2krGRlEQXWQu4EI8GaVHOIqYzbM0nQ==</p>
+            </div>
+        </div>
+<br>
+        <div class="talk-bubble tri-right left-top other">
+            <div class="talktext">
+                <p class="hash">U2FsdGVkX1+LWylTc44JQd7a3R2rn/wbyUDY06b+iolulvDGbFpMk0uakymC0Y2436pszycmhVv91w9Q+z3uNpnYz02GZGaRuN1omAKMi4Y=</p>
+            </div>
+        </div>
+<br>
+        <div class="talk-bubble tri-right left-top other">
+            <div class="talktext">
+                <p class="hash">U2FsdGVkX18ksRLJTViD9FOtMbWVnpBRs8eoyq8K93gPkFuI2sr9Whe3xURDMwybDzsvAcH1Upc6bkjALQQ46A==</p>
+            </div>
+        </div>
+<br>
+        <div class="talk-bubble tri-right left-top other">
+            <div class="talktext">
+                <p class="hash">U2FsdGVkX18FT5G+H/MreTrP6N9z2lOBjFZjAV05tBWHqopPhfYHJtVfPgXLH3ubAYzN+pusFakt+IZdMfB7Cm7juysXh7NmoM+TOzZIn4g=</p>
+            </div>
+        </div>
+<br>
+        <div class="talk-bubble tri-right right-top me">
+            <div class="talktext">
+                <p class="hash">U2FsdGVkX18n0mwanGRad5oDXy/VE4BYppZn237oDBE=</p>
+            </div>
+        </div>
+<br>
+
+        <div class="talk-bubble tri-right left-top other">
+            <div class="talktext">
+                <p class="hash">U2FsdGVkX1+FAwE8QbT5tX7daw8986Fd3T1HNIkFNMvYFjsFsOn5Tf7n3cB2QM3gYxOZkmlGHlZsqkr4zxVXyEua7gnwYiRxaCMJlwq4Ox4=</p>
+            </div>
+        </div>
+        <br>
+    </div>
+    <script>
+        $(".me").css("background-color", "#f6f7ac");
+        $(".other").css("background-color", "#cbeb76");
+
+
+
+        var iff = 0;
+        $(".right-top").css("margin-left", String(document.getElementById('chat').clientWidth - 210) + "px");
+        if (screen.height < 800) {
+            $("#chat").css("height", String(screen.height - 190) + "px");
+        } else {
+            $("#chat").css("height", String(screen.height - 300) + "px");
+
+        }
+        function encryptData(data, key) {
+            var ciphertext = CryptoJS.AES.encrypt(data, key);
+            return ciphertext.toString();
+        }
+
+        function decryptData(ciphertext, key) {
+            var bytes = CryptoJS.AES.decrypt(ciphertext, key);
+            return bytes.toString(CryptoJS.enc.Utf8);
+        }
+
+        function go() {
+            $("#thisclick").hide();
+            var a = document.getElementsByClassName("hash");
+            if (decryptData(a[0].innerHTML, "password") != "") {
+                iff = 1;
+                document.getElementById("disbutton").innerHTML = "Encryption";
+                for (var step = a.length - 1; step >= 0; step--) {
+                    a[step].innerHTML = decryptData(a[step].innerHTML, "password");
+                }
+            } else if (iff == 1) {
+                document.getElementById("disbutton").innerHTML = "Decryption";
+                iff = 0;
+                if (encryptData(a[0].innerHTML, "password") != "") {
+                    for (var step = a.length - 1; step >= 0; step--) {
+                        a[step].innerHTML = encryptData(a[step].innerHTML, "password");
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        #thisclick {
+            width: 80px;
+            margin-left: 72%;
+        }
+        #sb {
+            height: 35px;
+            width: 50px;
+        }
+        #chat {
+            overflow: auto;
+        }
+
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(200,200,200);
+        }
+
+        #dis {
+            width: 100%;
+            background-color: black;
+        }
+
+        #disinput {
+            width: 50%;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            font-size: 150%;
+        }
+
+        #disbutton {
+            font-size: 125%;
+            cursor:pointer;
+        }
+    </style>
+</body>
+
+</html>

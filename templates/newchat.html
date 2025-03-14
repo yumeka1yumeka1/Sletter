@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sletter</title>
+        <script src="static/aes.js"></script>
+        <link rel="stylesheet" href="static/chat.css" />
+        <script
+            src="https://code.jquery.com/jquery-3.6.3.js"
+            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+            crossorigin="anonymous"
+        ></script>
+    </head>
+
+    <body>
+        <div id="nav2">
+            <div id="profilediv">
+                <h2 style="margin: 0; height: 70px;">
+                    <id>{{ id }}</id><img id="profile" src="{{profileimage}}" alt="profile" />
+                    <br /><q style="opacity: 0;">{{id}}</q>
+                </h2>
+            </div>
+
+            <div style="height: 100%; background: white;">
+                <div id="logout">
+                    <p style="font-size: 100%; opacity: 0;">q</p>
+                    <center onclick="urlgo('home')">
+                        <h2 id="gohome" class="buttontext">
+                            home
+                        </h2>
+                    </center>
+                    
+                    <center onclick="urlgo('profile/{{id}}')">
+                        <h2 id="profileb" class="buttontext">
+                            profile
+                        </h2>
+                    </center>
+
+                    <center onclick="urlgo('mailbox')">
+                        <h2 id="mailbox" class="buttontext">
+                            mailbox
+                        </h2>
+                    </center>
+
+                    <center onclick="urlgo('logout')" id="logbutton">
+                        <h2 id="logoutt" class="buttontext">log out</h2>
+                    </center>
+                </div>
+            </div>
+        </div>
+
+        <div id="nav3" onclick="home()">
+            <p style="opacity: 0;">p</p>
+        </div>
+
+        <div id="home">
+            <div id="dis">
+                <img onclick="nav()" id="nav" src="static/nav.png" alt="navber button" />
+            </div>
+        </div>
+        
+
+    <form action="" method="post">
+                
+            
+        <p style="font-size: 100%; opacity: 0;">q</p>
+        <label style="font-size:200%;"><hhhdfgjhgdfjhdgjg id="hhhdfgjhgdfjhdgjg">background:</hhhdfgjhgdfjhdgjg> <input value="#b1e7f8" type="color" name="co" id="hhhdfgjhgdfjhdgjgi" style="font-size:100%;width:50%;"></label>
+        <br/>
+        <label style="font-size:200%;"><hhhdfgjhgdfjhdgjg id="hhhdfgjhgdfjhdgjgo">hint:</hhhdfgjhgdfjhdgjg> <textarea name="hi" id="hhhdfgjhgdfjhdgjgoi" style="height:40px;font-size:100%;width:50%;"></textarea></label>
+        <br/>
+        <input value="0" type="radio" name="ff" checked> <hdgs id="hdgs1">Private(need invitation)</hdgs>
+        <input value="1" name="ff" type="radio"> <hdgs id="hdgs2">Public(not need invitation)</hdgs>
+        <center style="margin-top:3%;"><input style="font-size:150%;" value="submit" type="submit"></center>
+        
+        
+            </form>
+
+        <script>
+            $('id').css('margin-right', String(-130 + 15 * (5 - '{{id}}'.length)) + 'px');
+            function urlgo(url) {
+                location.href = url;
+            }
+            var navv = 0;
+            $('#nav2').hide();
+            $('#nav3').hide();
+
+            function nav() {
+                $('#nav3').css('width', '100%');
+                $('#nav3').css('margin-left', '0%');
+                $('#nav2').css('margin-left', '-70%');
+                $('#nav2').show();
+                $('#nav3').show();
+                var count = 0;
+                var intervalId = setInterval(printSeventy, 2.5);
+                function printSeventy() {
+                    $('#nav2').css('margin-left', String(-70 + count) + '%');
+                    $('#nav3').css('margin-left', String(count) + '%');
+                    count++;
+                    if (count === 70) {
+                        clearInterval(intervalId);
+                    }
+                }
+            }
+
+            function home() {
+                var count = 0;
+                var intervalId = setInterval(printSeventy, 2.5);
+                function printSeventy() {
+                    $('#nav2').css('margin-left', String(-1 * count) + '%');
+                    $('#nav3').css('margin-left', String(70 - count) + '%');
+                    count++;
+                    if (count === 70) {
+                        clearInterval(intervalId);
+                        $('#nav2').hide();
+                        $('#nav3').hide();
+                    }
+                }
+            }
+        </script>
+        <style>
+            
+            id {
+                margin-left: 100px;
+                margin-right: -130px;
+            }
+            #profile {
+                border-radius: 30%;
+                margin-top: 20px;
+                width: 50px;
+                height: 50px;
+                margin-bottom: -15px;
+            }
+            #mailbutton {
+                font-size: 10px;
+            }
+            .buttontext {
+                font-weight: 500;
+            }
+            #logoutt {
+                margin: 10px;
+            }
+
+            #nav3 {
+                width: 100%;
+                height: 100%;
+                background-color: black;
+                position: fixed;
+                margin-left: 70%;
+                opacity: 0.5;
+            }
+
+            #home {
+                height: 100%;
+                width: 100%;
+                background: black;
+            }
+
+            #nav2 {
+                background: aquamarine;
+                position: fixed;
+                width: 70%;
+                height: 100%;
+            }
+
+            #nav {
+                width: 30px;
+                margin: 10px;
+            }
+
+            #thisclick {
+                width: 80px;
+                margin-left: 72%;
+            }
+
+            #sb {
+                height: 35px;
+                width: 50px;
+            }
+
+            #chat {
+                overflow: auto;
+            }
+
+            body {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background-color: #b1e7f8;
+            }
+
+            #dis {
+                width: 100%;
+                background-color: black;
+            }
+
+            #disinput {
+                width: 50%;
+                margin-top: 15px;
+                margin-bottom: 15px;
+                font-size: 150%;
+            }
+
+            #disbutton {
+                font-size: 125%;
+                cursor: pointer;
+            }
+        </style>
+    </body>
+</html>

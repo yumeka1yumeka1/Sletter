@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sletter</title>
+        <script src="static/aes.js"></script>
+        <link rel="stylesheet" href="static/chat.css" />
+        <script
+            src="https://code.jquery.com/jquery-3.6.3.js"
+            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+            crossorigin="anonymous"
+        ></script>
+    </head>
+
+    <body>
+        <div id="nav2">
+            <div id="profilediv">
+                <h2 style="margin: 0; height: 70px;">
+                    <id>{{ id }}</id><img id="profile" src="{{profileimage}}" alt="profile" />
+                    <br /><q style="opacity: 0;">{{id}}</q>
+                </h2>
+            </div>
+
+            <div style="height: 100%; background: white;">
+                <div id="logout">
+                    <p style="font-size: 100%; opacity: 0;">q</p>
+                    <center onclick="urlgo('home')">
+                        <h2 id="gohome" class="buttontext">
+                            home
+                        </h2>
+                    </center>
+                    
+                    <center onclick="urlgo('profile/{{id}}')">
+                        <h2 id="profileb" class="buttontext">
+                            profile
+                        </h2>
+                    </center>
+
+                    <center onclick="urlgo('mailbox')">
+                        <h2 id="mailbox" class="buttontext">
+                            mailbox
+                        </h2>
+                    </center>
+
+                    <center onclick="urlgo('logout')" id="logbutton">
+                        <h2 id="logoutt" class="buttontext">log out</h2>
+                    </center>
+                </div>
+            </div>
+        </div>
+<center>
+        <div>
+            
+    </div>
+        </center>
+        
+
+<style>
+nav {
+  list-style: none;
+width:33%;
+background:lightgray;
+}
+
+nav li {
+  margin-bottom: 15px;
+margin:0;
+}
+
+nav a {
+  display: block;
+  padding: 5px;
+  text-decoration: none;
+  color: black;
+}
+
+</style>
+
+        
+        
+        <div onclick="if(asd!=1){$('#blackkg').fadeOut(150);$('#navm').fadeOut(150)}else{asd=0}" id="blackkg" style="display:none;width:100vw;height:100vh;background:rgb(0,0,0,0.5);position: fixed;">
+<center>
+        <nav onclick="asd=1" id="navm" style="display: none;margin-top:30vh;">
+    <center><li><h3 style="margin:0;" id="muneneame">1</h3></li></center>
+    <center><li><a id="menu1" href="changename/1">change name</a></li></center>
+    <center><li><a id="menu2" href="set">setting</a></li></center>
+    <center><li><a id="menu3" onclick="leave()">leave</a></li></center>
+    <center><li><a id="menu4" href="#">developing</a></li></center>
+</nav></center>
+        </div>
+        <div id="nav3" onclick="home()">
+            <p style="opacity: 0;">p</p>
+        </div>
+
+        <div id="home">
+            <div id="dis">
+                <img onclick="nav()" id="nav" src="static/nav.png" alt="navber button" />
+            </div>
+        </div>
+        
+   <script>
+leaa = "Are you really deleting it?"
+lll= ''
+function leave() {
+    if (confirm(leaa)) {
+        urlgo(lll);
+    } else {
+
+    }   
+}
+var dd = 0;
+
+function changing(n) {
+    dd = 1;
+    setTimeout(() => changging(n), 700);
+}
+    
+function changging(n) {
+    if (dd == 1) {
+        dd = -1;
+        document.getElementById('muneneame').innerText = document.getElementById('jjghgfdhggid'+String(n)).innerText;
+        document.getElementById("menu1").href = "changename/" + String(n);
+        document.getElementById("menu2").href = "set/" + ci[2*n+1];
+        lll = "leave/" + ci[2*n+1];
+        $('#blackkg').fadeIn(150);
+        $('#navm').fadeIn(150);
+    }
+}
+
+</script>
+
+<div id="mailhome">
+    {% for i in range((ii)) %}
+    <div onmousedown="changing({{i}})" ontouchstart="changing({{i}})" onmouseup="if(dd != -1){dd = 0}" ontouchend="if(dd != -1){dd = 0}" id="chattingname{{i}}" style="background:{{popol[i]}};" class="mail" onclick="urlgo('chat/{{ci[2*i+1]}}')">
+        <center><h1 id="jjghgfdhggid{{i}}" style="margin:3%;color:{{popoll[i]}};">{{ci[2*i]}}</h1></center>
+    </div>
+    {% endfor %}
+</div>
+     
+        
+        
+        
+        <div id="plusdiv">
+            <svg onclick="urlgo('newchat')" style="float: right;margin-right:5vw;" width="70" height="70">
+  <circle cx="40" cy="40" r="30" fill="red"/>
+  <line x1="20" y1="40" x2="60" y2="40" stroke="white" stroke-width="4"/>
+  <line x1="40" y1="20" x2="40" y2="60" stroke="white" stroke-width="4"/>
+</svg>
+
+        </div>
+        
+        <script>
+            ci = {{ci | safe}}
+            asd=0
+
+            $('id').css('margin-right', String(-130 + 15 * (5 - '{{id}}'.length)) + 'px');
+            function urlgo(url) {
+                location.href = url;
+            }
+            var navv = 0;
+            $('#nav2').hide();
+            $('#nav3').hide();
+
+            function nav() {
+                $('#nav3').css('width', '100%');
+                $('#nav3').css('margin-left', '0%');
+                $('#nav2').css('margin-left', '-70%');
+                $('#nav2').show();
+                $('#nav3').show();
+                var count = 0;
+                var intervalId = setInterval(printSeventy, 2.5);
+                function printSeventy() {
+                    $('#nav2').css('margin-left', String(-70 + count) + '%');
+                    $('#nav3').css('margin-left', String(count) + '%');
+                    count++;
+                    if (count === 70) {
+                        clearInterval(intervalId);
+                    }
+                }
+            }
+
+            function home() {
+                var count = 0;
+                var intervalId = setInterval(printSeventy, 2.5);
+                function printSeventy() {
+                    $('#nav2').css('margin-left', String(-1 * count) + '%');
+                    $('#nav3').css('margin-left', String(70 - count) + '%');
+                    count++;
+                    if (count === 70) {
+                        clearInterval(intervalId);
+                        $('#nav2').hide();
+                        $('#nav3').hide();
+                    }
+                }
+            }
+        </script>
+        <style>
+            .mail {
+                background: yellow;
+                margin-left: 3%;
+                margin-right: 3%;
+            }
+            #mailhome {
+                height: 80vh;
+                overflow: auto;
+            }
+            
+            id {
+                margin-left: 100px;
+                margin-right: -130px;
+            }
+            #profile {
+                border-radius: 30%;
+                margin-top: 20px;
+                width: 50px;
+                height: 50px;
+                margin-bottom: -15px;
+            }
+            #mailbutton {
+                font-size: 10px;
+            }
+            .buttontext {
+                font-weight: 500;
+            }
+            #logoutt {
+                margin: 10px;
+            }
+
+            #nav3 {
+                width: 100%;
+                height: 100%;
+                background-color: black;
+                position: fixed;
+                margin-left: 70%;
+                opacity: 0.5;
+            }
+
+            #home {
+                height: 100%;
+                width: 100%;
+                background: black;
+            }
+
+            #nav2 {
+                background: aquamarine;
+                position: fixed;
+                width: 70%;
+                height: 100%;
+            }
+
+            #nav {
+                width: 30px;
+                margin: 10px;
+            }
+
+            #thisclick {
+                width: 80px;
+                margin-left: 72%;
+            }
+
+            #sb {
+                height: 35px;
+                width: 50px;
+            }
+
+            #chat {
+                overflow: auto;
+            }
+
+            body {
+                background-color: #ffffff;
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #dis {
+                width: 100%;
+                background-color: black;
+            }
+
+            #disinput {
+                width: 50%;
+                margin-top: 15px;
+                margin-bottom: 15px;
+                font-size: 150%;
+            }
+
+            #disbutton {
+                font-size: 125%;
+                cursor: pointer;
+            }
+        </style>
+    </body>
+</html>

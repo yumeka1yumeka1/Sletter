@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sletter</title>
+        <script src="../static/aes.js"></script>
+        <link rel="stylesheet" href="../static/chat.css" />
+        <script
+            src="https://code.jquery.com/jquery-3.6.3.js"
+            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+            crossorigin="anonymous"
+        ></script>
+    </head>
+
+    <body>
+        <div id="nav2">
+            <div id="profilediv">
+                <h2 style="margin: 0; height: 70px;">
+                    <id>{{ id }}</id><img id="profile" src="{{profileimageid}}" alt="profile" />
+                    <br /><q style="opacity: 0;">{{id}}</q>
+                </h2>
+            </div>
+
+            <div style="height: 100%; background: white;">
+                <div id="logout">
+                    <p style="font-size: 100%; opacity: 0;">q</p>
+                                        <center onclick="urlgo('home')">
+                        <h2 id="gohome" class="buttontext">
+                            home
+                        </h2>
+                    </center>
+                    
+                    <center onclick="urlgo('../profile/{{id}}')">
+                        <h2 id="profileb" class="buttontext">
+                            profile
+                        </h2>
+                    </center>
+
+                    <center onclick="urlgo('../mailbox')">
+                        <h2 id="mailbox" class="buttontext">
+                            mailbox
+                        </h2>
+                    </center>
+
+                    <center onclick="urlgo('../logout')" id="logbutton">
+                        <h2 id="logoutt" class="buttontext">log out</h2>
+                    </center>
+                </div>
+            </div>
+        </div>
+
+        <div id="nav3" onclick="home()">
+            <p style="opacity: 0;">p</p>
+        </div>
+
+        <div id="home">
+            <div id="dis">
+                <img onclick="nav()" id="nav" src="../static/nav.png" alt="navber button" />
+            </div>
+        </div>
+        <div id="baseprofile">
+            <center>
+                <img id="backgroundp" src="{{profileimage}}" alt="profileimage" />
+            </center>
+            <center id="editc">
+                <form>
+                    <img id="backgroundcaemer" onclick="edit(0)" style="width: 100px;" src="static/camera.png" alt="edit" />
+                    <input style="display:none;" type="file" id="backfile" accept="image/*">
+                </form>
+            </center>
+            <center id="profilemc">
+                <img id="profilem" src="{{profileimageid}}" alt="profileimage2" />
+            </center>
+            <center id="carc">
+                <form>
+                    <img onclick="edit(1)" id="cari" src="static/camera.png" alt="edit" />
+                    <input style="display:none;" type="file" id="backfile2" accept="image/*">
+                </form>
+            </center>
+            <center id="idc" style="margin-top: 7%;"><h1 id="proid">{{id}}</h1></center>
+        </div>
+
+<form action="" method="post" style="display:none;">
+    <input name="back" value="{{profileimage}}">
+    <input name="id" value="{{profileimageid}}">
+    <input id="sub" type="submit">
+</form>    
+    
+    
+    <script>
+            nooryes = 5;
+            let backimagee = "{{profileimage}}";
+            let inimagee = "{{profileimageid}}";
+            $('#backgroundsize').hide();
+            function edit(t) {
+                if (t == 0) {
+                    if (nooryes==0) {
+                        $("#sub").trigger("click");
+                    } else if(nooryes==1) {
+                        document.getElementById("profilem").src = inimagee;
+                        document.getElementById("backgroundcaemer").src = "static/camera.png";
+                        document.getElementById("cari").src = "static/camera.png";
+                        document.getElementsByName("id")[0].value = inimagee;
+                        nooryes = 5;
+
+                    } else {
+                        nooryes = 0;
+                        document.getElementById("backgroundcaemer").src = "static/check.png";
+                        document.getElementById("cari").src = "static/nockeck.png";
+                        $("#backfile").trigger("click");
+                    }
+                } else {
+                    if (nooryes==0) {
+                        document.getElementById("backgroundp").src = backimagee;
+                        document.getElementById("backgroundcaemer").src = "static/camera.png";
+                        document.getElementById("cari").src = "static/camera.png";
+                        document.getElementsByName("back")[0].value = backimagee;
+                        nooryes = 5;
+                    } else if (nooryes==1) {
+                        $("#sub").trigger("click");
+                    } else {
+                        nooryes = 1;
+                        document.getElementById("cari").src = "static/check.png";
+                        document.getElementById("backgroundcaemer").src = "static/nockeck.png";
+                        $("#backfile2").trigger("click");
+                    }
+                }
+            }
+            if (screen.width < 800) {
+                $('#backgroundp').css('height', '90vh');
+                $('#carc').css('margin-top', '-30%');
+                $('#cari').css('margin-left', '15%');
+                $('#idc').css('margin-top', '20%');
+            } else {
+                $('#backgroundp').css('height', '91.5vh');
+                $('#backgroundp').css('width', String(document.getElementById("backgroundp").clientHeight*375/600) + 'px');
+                $('#profilem').css('width', '10%');
+                $('#profilemc').css('margin-top', '26vh');
+                $('#editc').css('margin-left', '15vw');
+                $('#profilem').css('margin-top', '-10%');
+            }
+            $('id').css('margin-right', String(-130 + 15 * (5 - '{{id}}'.length)) + 'px');
+            function urlgo(url) {
+                location.href = url;
+            }
+            var navv = 0;
+            $('#nav2').hide();
+            $('#nav3').hide();
+
+            function nav() {
+                $('#nav3').css('width', '100%');
+                $('#nav3').css('margin-left', '0%');
+                $('#nav2').css('margin-left', '-70%');
+                $('#nav2').show();
+                $('#nav3').show();
+                var count = 0;
+                var intervalId = setInterval(printSeventy, 2.5);
+                function printSeventy() {
+                    $('#nav2').css('margin-left', String(-70 + count) + '%');
+                    $('#nav3').css('margin-left', String(count) + '%');
+                    count++;
+                    if (count === 70) {
+                        clearInterval(intervalId);
+                    }
+                }
+            }
+
+            function home() {
+                var count = 0;
+                var intervalId = setInterval(printSeventy, 2.5);
+                function printSeventy() {
+                    $('#nav2').css('margin-left', String(-1 * count) + '%');
+                    $('#nav3').css('margin-left', String(70 - count) + '%');
+                    count++;
+                    if (count === 70) {
+                        clearInterval(intervalId);
+                        $('#nav2').hide();
+                        $('#nav3').hide();
+                    }
+                }
+            }
+            
+            // Get the input file element
+const input = document.getElementById('backfile');
+
+// Listen for changes to the input file
+input.addEventListener('change', () => {
+  // Get the selected file
+  const file = input.files[0];
+
+  // Create a new image element
+  const img = new Image();
+
+  // Set the source of the image to the selected file
+  img.src = URL.createObjectURL(file);
+
+  // Wait for the image to load
+  img.onload = () => {
+    // Create a new canvas element
+    const canvas = document.createElement('canvas');
+
+    // Set the canvas dimensions to the desired size
+    canvas.width = 270;
+    canvas.height = 450;
+
+    // Get the canvas context
+    const ctx = canvas.getContext('2d');
+
+    // Draw the image onto the canvas
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    // Get the resized image as a data URL
+    const resizedImg = canvas.toDataURL('image/jpeg', 1.0);
+
+document.getElementById("backgroundp").src = resizedImg;
+      document.getElementsByName("back")[0].value = resizedImg;
+      
+  };
+});
+        
+const inputs = document.getElementById('backfile2');
+
+// Listen for changes to the input file
+inputs.addEventListener('change', () => {
+  // Get the selected file
+  const file = inputs.files[0];
+
+  // Create a new image element
+  const img = new Image();
+
+  // Set the source of the image to the selected file
+  img.src = URL.createObjectURL(file);
+
+  // Wait for the image to load
+  img.onload = () => {
+    // Create a new canvas element
+    const canvas = document.createElement('canvas');
+
+    // Set the canvas dimensions to the desired size
+    canvas.width = 250;
+    canvas.height = 250;
+
+    // Get the canvas context
+    const ctx = canvas.getContext('2d');
+
+    // Draw the image onto the canvas
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    // Get the resized image as a data URL
+    const resizedImg = canvas.toDataURL('image/jpeg', 1.0);
+
+document.getElementById("profilem").src = resizedImg;
+      document.getElementsByName("id")[0].value = resizedImg;
+      
+  };
+});
+
+            
+        </script>
+        <style>
+            #cari {
+                width: 35px;
+                margin-left: 5%;
+            }
+            #carc {
+                margin-top: -10%;
+            }
+            #editc {
+                margin-top: -90vh;
+                margin-left: 60%;
+}
+            }
+            #edit {
+                font-size: 150%;
+                border-radius: 30px;
+                border: solid deepskyblue;
+                background: deepskyblue;
+                color: whitesmoke;
+            }
+            #proid {
+                color: whitesmoke;
+                margin: 0;
+            }
+            #profilemc {
+                margin-top: 45%;
+            }
+            #profilem {
+                border-radius: 30%;
+                width: 30%;
+            }
+            #backgroundp {
+                width: 100%;
+                height: 100%;
+            }
+            id {
+                margin-left: 100px;
+                margin-right: -130px;
+            }
+            #profile {
+                border-radius: 30%;
+                margin-top: 20px;
+                width: 50px;
+                height: 50px;
+                margin-bottom: -15px;
+            }
+            #mailbutton {
+                font-size: 10px;
+            }
+            .buttontext {
+                font-weight: 500;
+            }
+            #logoutt {
+                margin: 10px;
+            }
+
+            #nav3 {
+                width: 100%;
+                height: 100%;
+                background-color: black;
+                position: fixed;
+                margin-left: 70%;
+                opacity: 0.5;
+            }
+
+            #home {
+                height: 100%;
+                width: 100%;
+                background: black;
+            }
+
+            #nav2 {
+                background: aquamarine;
+                position: fixed;
+                width: 70%;
+                height: 100%;
+            }
+
+            #nav {
+                width: 30px;
+                margin: 10px;
+            }
+
+            #thisclick {
+                width: 80px;
+                margin-left: 72%;
+            }
+
+            #sb {
+                height: 35px;
+                width: 50px;
+            }
+
+            #chat {
+                overflow: auto;
+            }
+
+            body {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background-color: #b1e7f8;
+            }
+
+            #dis {
+                width: 100%;
+                background-color: black;
+            }
+
+            #disinput {
+                width: 50%;
+                margin-top: 15px;
+                margin-bottom: 15px;
+                font-size: 150%;
+            }
+
+            #disbutton {
+                font-size: 125%;
+                cursor: pointer;
+            }
+        </style>
+    </body>
+</html>

@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sletter</title>
+        <script src="../static/aes.js"></script>
+        <link rel="stylesheet" href="../static/chat.css" />
+        <script
+            src="https://code.jquery.com/jquery-3.6.3.js"
+            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+            crossorigin="anonymous"
+        ></script>
+    </head>
+
+    <body>
+<div id="navv" style="position: relative;z-index: 2;">
+    
+        <div id="nav2">
+            <div id="profilediv">
+                <h2 style="margin: 0; height: 70px;">
+                    <id>{{ id }}</id><img id="profile" src="{{profileimage}}" alt="profile" />
+                    <br/><q style="opacity: 0;">{{id}}</q>
+                </h2>
+            </div>
+
+
+
+            
+            <div style="height: 100%; background: white;">
+                <div id="logout">
+                    <p style="font-size: 100%; opacity: 0;">q</p>
+                    <center onclick="alertshow();home();">
+                        <h2 id="gohome" class="buttontext">
+                            hint
+                        </h2>
+                    </center>
+                    
+                    <center onclick="urlgo('../invite/{{name}}')">
+                        <h2 id="profileb" class="buttontext">
+                            inviting friends
+                        </h2>
+                    </center>
+
+                    <center onclick="copyToClipboard(window.location.href);alert('링크가 복사되었습니다.');">
+                        <h2 id="copylink" class="buttontext">
+                            copy link
+                        </h2>
+                    </center>
+                    
+                    <center onclick="location.reload()" id="logbutton">
+                        <h2 id="refresh" class="buttontext">refresh</h2>
+                    </center>
+                    
+                    <center onclick="urlgo('../home')">
+                        <h2 id="mailbox" class="buttontext">
+                            go back
+                        </h2>
+                    </center>
+                    
+                    
+                    <center onclick="urlgo('../set/{{name}}')">
+                        <h2 style="margin-top:35%;" id="sett" class="buttontext">setting</h2>
+                    </center>
+                    
+                    <center onclick="leave()" id="logbutton">
+                        <h2 id="logoutt" class="buttontext">Leaving chat room</h2>
+                    </center>
+
+
+                </div>
+            </div>
+        </div>    
+        
+        <div onclick="if(asd!=1){$('#blackkg').fadeOut(300);$('#navm').fadeOut(300)}else{asd=0}" id="blackkg" style="display:none;width:100vw;height:100vh;background:rgb(0,0,0,0.5);position: fixed;">
+<center>
+        <nav onclick="asd=1" id="navm" style="display: none;margin-top:30vh;">
+    <center><li><a id="menu1">copy</a></li></center>
+    <center><li><a id="menu2">delete</a></li></center>
+    <center><li><a id="menu3" href="#">developing</a></li></center>
+    <center><li><a id="menu4" href="#">developing</a></li></center>
+</nav></center>
+        </div>
+        <div id="nav3" onclick="home()">
+            <p style="opacity: 0;">p</p>
+        </div>
+
+            </div>
+
+        <div id="home">
+            <div id="dis">
+                <img onclick="nav()" id="nav" src="../static/nav.png" alt="navber button" />
+            </div>
+        </div>
+        
+        <div id="home">
+            <div id="dis">
+                <center style="margin-top:-60px;"><input id="disinput" type="password"><button onclick="go()" id="disbutton">Decryption</button></center>
+            </div>
+        </div>
+<center>
+<div class="custom-alert" id="customAlert">
+    <span class="close-btn" onclick="closeAlert()">X</span>
+    <span id="alertMessage"><code>{{hint | safe}}</code></span>
+</div>
+</center>
+
+<div id="chat">
+    
+{%for i in range(c)%}
+{% if chating[3*i] == id %}
+<p class="iid il">{{chating[3*i]}}</p>
+<img onclick="urlgo('../profile/{{chating[3*i]}}')" class="pi pr" src='{{pj[chating[3*i]]}}'>
+<div id='chat{{i}}' class="talk-bubble tri-right right-top me">
+    <div class="talktext" onmousedown="changing({{i}})" ontouchstart="changing({{i}})" onmouseup="if(dd != -1){dd = 0}" ontouchend="if(dd != -1){dd = 0}">
+        <p id="jjghgfdhggid{{i}}" class="hash">{{ chating[3*i+1] }}</p>
+    </div>
+    <button class="show-more-btn" onclick="showMore({{i}})">Read more</button>
+</div>
+<p id="sdfgdsf{{i}}" class="da g1">{{ chating[3*i+2] }}</p>
+<br>
+{% else %}
+<p class="iid ir">{{chating[3*i]}}</p>
+<img onclick="urlgo('../profile/{{chating[3*i]}}')" class="pi pl" src='{{pj[chating[3*i]]}}'>
+<div id='chat{{i}}' class="talk-bubble tri-right left-top other">
+    <div class="talktext" onmousedown="changing({{i}})" ontouchstart="changing({{i}})" onmouseup="if(dd != -1){dd = 0}" ontouchend="if(dd != -1){dd = 0}">
+        <p id="jjghgfdhggid{{i}}" id="jjghgfdhggid{{i}}"class="hash">{{ chating[3*i+1] }}</p>
+    </div>
+        <button class="show-more-btn" onclick="showMore({{i}})">Read more</button>
+
+</div>
+<p id="sdfgdsf{{i}}" class="da g2">{{ chating[3*i+2] }}</p>
+<br>
+{% endif %}
+{%endfor%}
+    </div>
+
+<!--
+start,start,start,start,start,start,start,start,start,start,start,start
+-->
+
+<form style="display:none;" action="./{{name}}/d" method="POST">
+<input name="ichi" type="text" id="ichi">
+<input name="ni" type="text" id="ni">
+<input type="submit" id="san">
+</form>
+        
+   <script>
+
+       document.querySelectorAll('.hash').forEach(function(content, index) {
+  if (content.scrollHeight > 400) {
+    var btn = document.querySelectorAll('.show-more-btn')[index];
+    btn.style.display = 'block'; // 내용이 200px를 넘을 때 버튼을 표시합니다.
+  }
+});
+
+function showMore(index) {
+  var content = document.querySelectorAll('.hash')[index];
+  var contents = document.querySelectorAll('.talktext')[index];
+  var btn = document.querySelectorAll('.show-more-btn')[index];
+    btn.style.display = 'none';
+    contents.style.maxHeight = 'none'; // 전체 내용 보이도록 설정
+    if(document.getElementsByClassName("pi")[index].classList.contains('pl')) {
+      document.getElementsByClassName("pi")[index].style.marginBottom = (40 + document.getElementById('jjghgfdhggid'+index).clientHeight) + "px";
+  }
+}
+       
+       
+chating = {{chating | safe}}
+pj = {{pj | safe}}
+
+
+function req() {
+    var xhr = new XMLHttpRequest();
+    url = "../req/{{name}}/" + String(parseInt(chating.length / 3))
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = xhr.response;
+            if (response !== '0') {
+                chating2 = JSON.parse(response.replace(/'/g, '"'));
+                var xhra = new XMLHttpRequest();
+                url = "../req2/{{name}}/" + String(parseInt(chating.length / 3))
+                xhra.open("GET", url, true);
+                xhra.onreadystatechange = function() {
+                    if (xhra.readyState === 4 && xhra.status === 200) {
+                        var response = xhra.response;
+                        if (response !== '0') {
+                            chating = chating2;
+                            pj = JSON.parse(response.replace(/'/g, '"'));
+                            ll = ""
+                            for (var i = 0; i < chating.length / 3; i++) {
+                                if (chating[3 * i] == "{{ id }}") {
+                                    ll = ll + '<p class="iid il">' + chating[3 * i] + '</p>'
+                                    ll = ll + '<img onclick="urlgo(`../profile/' + chating[3 * i] + '`)" class="pi pr" src="' + pj[chating[3 * i]] + '">'
+                                    ll = ll + '<div id="chat' + i + '" class="talk-bubble tri-right right-top me">'
+                                    ll = ll + '<div class="talktext" onmousedown="changing(' + i + ')" ontouchstart="changing(' + i + ')" onmouseup="if(dd != -1){dd = 0}" ontouchend="if(dd != -1){dd = 0}">'
+                                    ll = ll + '<p id="jjghgfdhggid' + i + '" class="hash">' + chating[3 * i + 1] + '</p></div>'
+                                    ll = ll + '<button class="show-more-btn" onclick="showMore(' + i + ')">Read more</button></div>'
+                                    ll = ll + '<p id="sdfgdsf' + i + '" class="da g1">' + chating[3 * i + 2] + '</p><br>'
+                                } else {
+                                    ll = ll + '<p class="iid ir">' + chating[3 * i] + '</p>'
+                                    ll = ll + '<img onclick="urlgo(`../profile/' + chating[3 * i] + '`)" class="pi pl" src="' + pj[chating[3 * i]] + '">'
+                                    ll = ll + '<div id="chat' + i + '" class="talk-bubble tri-right left-top other">'
+                                    ll = ll + '<div class="talktext" onmousedown="changing(' + i + ')" ontouchstart="changing(' + i + ')" onmouseup="if(dd != -1){dd = 0}" ontouchend="if(dd != -1){dd = 0}">'
+                                    ll = ll + '<p id="jjghgfdhggid' + i + '" id="jjghgfdhggid' + i + '"class="hash">' + chating[3 * i + 1] + '</p></div>'
+                                    ll = ll + '<button class="show-more-btn" onclick="showMore(' + i + ')">Read more</button></div>'
+                                    ll = ll + '<p id="sdfgdsf' + i + '" class="da g2">' + chating[3 * i + 2] + '</p><br>'
+                                }
+
+                            }
+                            document.getElementById('chat').innerHTML = ll
+                            il();
+                            
+       document.querySelectorAll('.hash').forEach(function(content, index) {
+  if (content.scrollHeight > 400) {
+    var btn = document.querySelectorAll('.show-more-btn')[index];
+    btn.style.display = 'block';
+  }
+});   
+                            
+ il()
+              
+                            
+                            
+    
+if (iff == 1) {
+iff = 0
+    
+    
+go()
+}
+
+
+il()
+
+
+                            
+                            
+                            
+                            
+                        }
+                    }
+                };
+                xhra.send();
+            }
+        }
+    }
+    xhr.send();
+}
+       
+       
+function copyToClipboard(x) {
+    navigator.clipboard.writeText(x)
+        .catch(function(err) {
+            copyToClipboard();
+        });
+}
+       
+var dd = 0;
+
+function changing(n) {
+    dd = 1;
+    setTimeout(() => changging(n), 700);
+}
+    
+function changging(n) {
+    if (dd == 1) {
+        dd = -1;
+        document.getElementById("menu1").onclick  = function() {
+            var textToCopy = document.getElementById('jjghgfdhggid' + n).innerText;
+            copyToClipboard(textToCopy);
+            if(asd!=1){$('#blackkg').fadeOut(150);$('#navm').fadeOut(150)}else{asd=0}
+        };
+        document.getElementById("menu2").onclick  = function() {
+            if (confirm(leaa)) {
+                document.getElementById('ichi').value = document.getElementById('sdfgdsf' + n).innerText;
+                document.getElementById('ni').value = n;
+                document.getElementById('san').click();
+                
+            } else {
+
+            }
+        };
+        $('#blackkg').fadeIn(150);
+        $('#navm').fadeIn(150);
+        
+    }
+}
+
+</script>
+
+     
+
+<!--
+end,end,end,end,end,end,end,end,end,end,end,end,end,end,end,end,end,end
+-->
+<div id="in">
+        <center>
+            <textarea id="chatin" type="text" style="font-size:120%;margin-bottom: -10px;" onkeydown="handleKeyPress(event)"></textarea><button type="button" onclick="chatt()" id="chatbutton"><se id="se">send</se></button>
+    
+                        <form id="formedd" style="display:none;" action="" method="POST">
+<input name="ttext" type="text" id="ttext"><input type="submit" id="subm">
+            </form>
+        </center>
+    </div>
+<script>
+window.onload = function() {
+  const chat = document.getElementById('chat');
+chat.scrollTop = chat.scrollHeight;
+};
+    
+e1 = "Encryption"
+e2 = "Decryption"
+    
+    
+lea = "Are you really going out?"
+leaa = "Are you really deleting it?"
+
+function chatt() {
+
+    
+    passs = document.getElementById('disinput').value;
+    chatini = document.getElementById('chatin').value;
+    var gfjioghjoiudhj = 1
+    if (passs !== "" && chatin !== "") {
+        var encryptedData = encryptData(chatini, passs);
+        var currentUrl = window.location.href;
+        fetch(currentUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                ttext: encryptedData
+            })
+        })
+        .then(response => response.text())
+        .then(data => {
+            req();
+            console.log('Success:', data);
+            document.getElementById('chatin').value = '';
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
+}
+    
+function handleKeyPress(event) {
+    if (window.innerWidth >= 800) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+                chatt();
+                event.preventDefault();
+            }
+    }
+}
+
+    
+document.getElementById("disinput").addEventListener("keypress", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            go();
+        }
+});
+
+
+    
+    function leave() {
+        if (confirm(lea)) {
+            urlgo('../leave/{{name}}');
+        } else {
+            
+        }
+
+    }
+    
+function il() {
+    var elements = document.getElementsByClassName("il");
+
+    for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
+    
+        var fontSize = parseFloat(window.getComputedStyle(element).fontSize);
+
+        var textLength = element.textContent.length;
+
+        if(textLength>3) {
+            var newMarginLeft = document.getElementById('chat').clientWidth - fontSize * textLength + 48;
+        } else {
+            var newMarginLeft = document.getElementById('chat').clientWidth - fontSize * textLength - 5;
+        }
+        element.style.marginLeft = newMarginLeft + "px";
+        
+
+    }
+    
+var elementsq = document.getElementsByClassName("pi");
+
+for (var i = 0; i < elementsq.length; i++) {
+    var elementq = elementsq[i];
+    if (elementq.classList.contains('pl')) {
+        if(document.getElementById('jjghgfdhggid'+i).clientHeight<400) {
+            elementq.style.marginBottom = 40 + document.getElementById('jjghgfdhggid'+i).clientHeight + "px";
+        } else {
+            elementq.style.marginBottom = '445px';
+        }
+    }
+}
+   
+
+
+    
+$(".right-top").css("margin-left", String(document.getElementById('chat').clientWidth - 273) + "px");
+$(".pr").css("margin-left", String(document.getElementById('chat').clientWidth - 38) + "px");
+$(".g1").css("margin-left", String(document.getElementById('chat').clientWidth - 346) + "px");
+$(".g2").css("margin-left", String(237) + "px");
+
+    var chat = document.getElementById('chat');
+chat.scrollTop = chat.scrollHeight;
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    $(document).ready(function() {
+        
+    il();
+
+        
+        if (screen.height <= 800) {
+            $("#chat").css("height", String(screen.height - document.getElementById('dis').clientHeight - document.getElementById('in').clientHeight -10) + "px");
+        } else {
+            $("#chat").css("height", String(screen.height - document.getElementById('dis').clientHeight - document.getElementById('in').clientHeight -170) + "px");
+        } 
+        
+        
+let intervalId = setInterval(req, 1000);
+
+        
+    });
+    function closeAlert() {
+        var customAlert = document.getElementById('customAlert');
+        customAlert.style.display = 'none';
+        if (screen.height <= 800) {
+            $("#chat").css("height", String(screen.height - document.getElementById('dis').clientHeight - document.getElementById('in').clientHeight -10) + "px");
+        } else {
+            $("#chat").css("height", String(screen.height - document.getElementById('dis').clientHeight - document.getElementById('in').clientHeight -170) + "px");
+        } 
+    }
+    function alertshow() {
+        customAlert.style.display = 'block';
+        if (screen.height <= 800) {
+            $("#chat").css("height", String(screen.height - document.getElementById('dis').clientHeight - document.getElementById('in').clientHeight- document.getElementById('customAlert').clientHeight -10) + "px");
+        } else {
+            $("#chat").css("height", String(screen.height - document.getElementById('dis').clientHeight - document.getElementById('in').clientHeight- document.getElementById('customAlert').clientHeight -170) + "px");
+        } 
+    }
+    
+asd=0
+
+        var iff = 0;
+        function encryptData(data, key) {
+            var ciphertext = CryptoJS.AES.encrypt(data, key);
+            return ciphertext.toString();
+        }
+
+        function decryptData(ciphertext, key) {
+            var bytes = CryptoJS.AES.decrypt(ciphertext, key);
+            return bytes.toString(CryptoJS.enc.Utf8);
+        }
+
+        function go() {
+            fddfs = 1
+            $("#thisclick").hide();
+            pa = document.getElementById('disinput').value;
+            var a = document.getElementsByClassName("hash");
+            if (iff == 0) {
+                
+                for (var step = (chating.length/3) - 1; step >= 0; step--) {
+                    try {
+
+
+                    
+                    if(decryptData(chating[step*3+1], pa) != "") {
+                        fddfs++;
+                        console.log(step)
+                    }
+                    } catch (error) {
+    console.error('An error occurred:', error);
+}
+                }
+                
+                if(fddfs>1){
+                    iff = 1;
+                    document.getElementById("disbutton").innerText = e1;
+                    for (var step = (chating.length/3) - 1; step >= 0; step--) {
+                        
+                        try {
+                        a[step].innerText = decryptData(chating[step*3+1], pa);
+                        } catch(error) {
+                            console.error('An error occurred:', error);
+                        }
+                    
+                    
+                    }
+                    
+                il() 
+                    
+                }
+                
+            } else if (iff == 1) {
+                document.getElementById("disbutton").innerText = e2;
+                iff = 0;
+                for (var step = (chating.length/3) - 1; step >= 0; step--) {
+                    a[step].innerText = chating[3*step+1]
+                }
+                il()
+                
+            }
+        
+        
+        }
+            
+            
+            $('id').css('margin-right', String(-130 + 15 * (5 - '{{id}}'.length)) + 'px');
+            function urlgo(url) {
+                if (dd!=1&&dd!=-1) {
+                location.href = url;
+                }
+            }
+            var navv = 0;
+            $('#nav2').hide();
+            $('#nav3').hide();
+
+            function nav() {
+                $('#nav3').css('width', '100%');
+                $('#nav3').css('margin-left', '0%');
+                $('#nav2').css('margin-left', '-70%');
+                $('#nav2').show();
+                $('#nav3').show();
+                var count = 0;
+                var intervalId = setInterval(printSeventy, 2.5);
+                function printSeventy() {
+                    $('#nav2').css('margin-left', String(-70 + count) + '%');
+                    $('#nav3').css('margin-left', String(count) + '%');
+                    count++;
+                    if (count === 70) {
+                        clearInterval(intervalId);
+                    }
+                }
+            }
+
+            function home() {
+                var count = 0;
+                var intervalId = setInterval(printSeventy, 2.5);
+                function printSeventy() {
+                    $('#nav2').css('margin-left', String(-1 * count) + '%');
+                    $('#nav3').css('margin-left', String(70 - count) + '%');
+                    count++;
+                    if (count === 70) {
+                        clearInterval(intervalId);
+                        $('#nav2').hide();
+                        $('#nav3').hide();
+                    }
+                }
+            }
+        </script>
+        <style>
+
+            .iid {
+                margin:0;
+                /* margin-bottom: -7px; */
+            }
+            .ir {
+                margin-left: 7px;
+            }
+            .il {
+                margin-bottom: 2px;
+            }
+            .left-top {
+                margin-left: 20px;
+            }
+            
+            .right-top {
+                margin-top: -20px;
+            }
+            .pi {
+                width: 30px;
+                height: 30px;
+                border-radius: 30%;
+            }
+            
+            .pl {
+                margin-bottom: 53px;
+                margin-left: 5px;
+
+            }
+            .pr {
+            }
+            .talk-bubble {
+                width:210px;
+            }
+
+.da {
+    font-size: 72%;
+    margin:0;
+}
+.hash {
+    font-size:77%;
+}
+            
+.talktext {
+    max-height: 400px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+            
+.show-more-btn {
+    display: none;
+    cursor: pointer;
+    color: blue;
+    margin:0;
+    margin-top: 10px;
+  }
+            
+.me {
+    background-color:#f6f7ac;
+}
+.other {
+    background-color:#cbeb76;
+}
+
+            nav {
+  list-style: none;
+width:33%;
+background:lightgray;
+}
+
+
+nav li {
+  margin-bottom: 15px;
+margin:0;
+}
+
+nav a {
+  display: block;
+  padding: 5px;
+  text-decoration: none;
+  color: black;
+}
+            
+
+.custom-alert {
+    display: none;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    max-width: 80%;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+.custom-alert .close-btn {
+    float: right;
+    cursor: pointer;
+}
+
+            .mail {
+                background: yellow;
+                margin-left: 3%;
+                margin-right: 3%;
+            }
+            #mailhome {
+                height: 80vh;
+                overflow: auto;
+            }
+            
+            id {
+                margin-left: 100px;
+                margin-right: -130px;
+            }
+            #profile {
+                border-radius: 30%;
+                margin-top: 20px;
+                width: 50px;
+                height: 50px;
+                margin-bottom: -15px;
+            }
+            #mailbutton {
+                font-size: 10px;
+            }
+            .buttontext {
+                font-weight: 500;
+            }
+            #logoutt {
+                margin: 10px;
+            }
+
+            #nav3 {
+                width: 100%;
+                height: 100%;
+                background-color: black;
+                position: fixed;
+                margin-left: 70%;
+                opacity: 0.5;
+            }
+
+            #home {
+                height: 100%;
+                width: 100%;
+                background: black;
+            }
+
+            #nav2 {
+                background: aquamarine;
+                position: fixed;
+                width: 70%;
+                height: 100%;
+            }
+
+            #nav {
+                width: 30px;
+                margin: 10px;
+            }
+
+            #thisclick {
+                width: 80px;
+                margin-left: 72%;
+            }
+
+            #sb {
+                height: 35px;
+                width: 50px;
+            }
+
+            #chat {
+                overflow: auto;
+            }
+
+            body {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background-color: {{ background }};
+            }
+
+            #dis {
+                width: 100%;
+                background-color: black;
+            }
+
+            #disinput {
+                width: 50%;
+                margin-top: 15px;
+                margin-bottom: 15px;
+                font-size: 150%;
+            }
+            
+            #chatin {
+                height: 30px;
+                width: 70%;
+                margin-top: 15px;
+                margin-bottom: 15px;
+                font-size: 150%;
+            }
+            #in {
+                width: 100%;
+            }
+
+            #chatbutton {
+                font-size: 125%;
+                cursor: pointer;
+            }
+            
+            #disbutton {
+                font-size: 125%;
+                cursor: pointer;
+            }
+        </style>
+    </body>
+</html>

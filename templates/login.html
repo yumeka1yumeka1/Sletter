@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sletter</title>
+    <script src="static/aes.js"></script>
+    <link rel="stylesheet" href="static/chat.css">
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script src="static/sha256.js"></script>
+
+</head>
+
+<body>
+    <center>
+        <h1 class="change" style="font-size: 350%;">Sign in</h1>
+    </center>
+    <br>
+    <form action="" method="post">
+
+        <center>
+            <h1>ID:</h1>
+        </center>
+        <center><input placeholder="enter your ID" class="input" name="id" type="text" maxlength='20'></center>
+        <center><p id='noen' style="color: red;"><b>This ID does not exist.</b></p></center>
+        <center>
+            <h1>PW:</h1>
+        </center>
+        <center><input placeholder="enter your PW" class="input" name="pw" type="password"></center>
+        <center><p style="color: red;" id="noen2"><b>Password is incorrect.</b></p></center>
+        
+        
+        
+        <input name="pww" type="password" style="display: none;">
+        <input id="sub" type="submit" style="display: none;">
+        
+        
+        
+        <br id="br">
+        <center><input onclick="go()" class="change" id="submit" type="button" value="submit"></center>
+    </form>
+    <center><a href="signup">
+            <h3><b id="en">Go to sign up</b></h3>
+        </a></center>
+    <style>
+        #submit {
+            font-size: 250%;
+            border-radius: 15px;
+        }
+
+        .input {
+            border-radius: 15px;
+            border: 0;
+            width: 70%;
+            font-size: 200%;
+        }
+    </style>
+    <script>
+        var wrong = {{ wrong }};
+        window.onkeydown = (e) => { if (event.keyCode == '13') { event.preventDefault(); go(); } }
+        async function go() {
+            function goo() {
+            document.getElementsByName("pww")[0].value = sha256(document.getElementsByName("pw")[0].value)
+            }
+            await goo();
+            document.getElementsByName("pw")[0].value = "";
+            $("#sub").trigger("click");
+            
+            
+        }
+        $("#noen").hide();
+        $("#noen2").hide();
+        
+        if (wrong == 0) {
+            $("#noen").show();
+        } else if (wrong==1){
+            $("#noen2").show();
+        }
+
+        if (screen.width < 800) {
+            $("br").hide();
+            $("#br").show();
+        }
+    </script>
+</body>
+
+</html>
