@@ -184,7 +184,7 @@ def edit():
             data = str(data)[1:-1]
             f = open("profile.txt",'w')
             f.write(data)
-            f.close();
+            f.close()
             f = open("profile.txt", 'r')
             data = f.read()
             f.close()
