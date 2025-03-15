@@ -43,7 +43,7 @@
                         </h2>
                     </center>
 
-                    <center onclick="copyToClipboard(window.location.href);alert('링크가 복사되었습니다.');">
+                    <center onclick="copyToClipboard(window.location.href);alert('The link has been copied.');">
                         <h2 id="copylink" class="buttontext">
                             copy link
                         </h2>
@@ -151,7 +151,7 @@ start,start,start,start,start,start,start,start,start,start,start,start
        document.querySelectorAll('.hash').forEach(function(content, index) {
   if (content.scrollHeight > 400) {
     var btn = document.querySelectorAll('.show-more-btn')[index];
-    btn.style.display = 'block'; // 내용이 200px를 넘을 때 버튼을 표시합니다.
+    btn.style.display = 'block';
   }
 });
 
@@ -160,7 +160,7 @@ function showMore(index) {
   var contents = document.querySelectorAll('.talktext')[index];
   var btn = document.querySelectorAll('.show-more-btn')[index];
     btn.style.display = 'none';
-    contents.style.maxHeight = 'none'; // 전체 내용 보이도록 설정
+    contents.style.maxHeight = 'none';
     if(document.getElementsByClassName("pi")[index].classList.contains('pl')) {
       document.getElementsByClassName("pi")[index].style.marginBottom = (40 + document.getElementById('jjghgfdhggid'+index).clientHeight) + "px";
   }
@@ -576,7 +576,6 @@ asd=0
 
             .iid {
                 margin:0;
-                /* margin-bottom: -7px; */
             }
             .ir {
                 margin-left: 7px;
