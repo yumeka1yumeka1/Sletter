@@ -140,14 +140,14 @@
 start,start,start,start,start,start,start,start,start,start,start,start
 -->
 
-<form style="display:none;" action="./{{name}}/d" method="POST">
+<form id="deleteform" style="display:none;" action="./{{name}}/d" method="POST">
 <input name="ichi" type="text" id="ichi">
 <input name="ni" type="text" id="ni">
 <input type="submit" id="san">
 </form>
         
    <script>
-
+let ddd = 0;
        document.querySelectorAll('.hash').forEach(function(content, index) {
   if (content.scrollHeight > 400) {
     var btn = document.querySelectorAll('.show-more-btn')[index];
@@ -264,7 +264,24 @@ function changing(n) {
     dd = 1;
     setTimeout(() => changging(n), 700);
 }
+
+document.querySelector('#deleteform').addEventListener('submit', async (event) => {
+event.preventDefault();
+const formData = new FormData(event.target);
+try {
+    const response = await fetch('./{{name}}/d', {
+      method: 'POST',
+      body: formData,
+    });
     
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+
+       
+       
 function changging(n) {
     if (dd == 1) {
         dd = -1;
@@ -274,13 +291,27 @@ function changging(n) {
             if(asd!=1){$('#blackkg').fadeOut(150);$('#navm').fadeOut(150)}else{asd=0}
         };
         document.getElementById("menu2").onclick  = function() {
-            if (confirm(leaa)) {
+            if(ddd==0) {
+                if (confirm(leaa)) {
+
+
+                    document.getElementById('ichi').value = document.getElementById('sdfgdsf' + n).innerText;
+                    document.getElementById('ni').value = n;
+                    document.getElementById('san').click();
+                    if(asd!=1){$('#blackkg').fadeOut(150);$('#navm').fadeOut(150)}else{asd=0}
+                    ddd=1;
+
+
+
+
+
+                }
+            } else {
                 document.getElementById('ichi').value = document.getElementById('sdfgdsf' + n).innerText;
                 document.getElementById('ni').value = n;
                 document.getElementById('san').click();
-                
-            } else {
-
+                if(asd!=1){$('#blackkg').fadeOut(150);$('#navm').fadeOut(150)}else{asd=0}
+                ddd=1;
             }
         };
         $('#blackkg').fadeIn(150);
